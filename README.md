@@ -109,7 +109,7 @@ GitHub looks for workflow files in the `.github/workflows` directory at the root
 
 - 29 tests pass offline (`python -m pytest -q`, Python 3.12.10, pytest 9.0.2, 2026-11-15).
 - Run read-only against a real 3,422-row training file and its 10,306-character stub: all six checks passed in 0.3 seconds.
-- The CI workflow has not run on GitHub yet. It runs once this folder is its own repository. Its two gate steps were replayed locally under `bash -e`, together with a mistyped path and a swapped file, and each failed where it should.
+- The CI workflow's first run on GitHub passed on 2026-11-15: 29 tests on CPython 3.12.16, then both gate steps, with the matching sample at 6 of 6 and the mixed sample out with exit 1 ([run 43751321655](https://github.com/chido10/pair-check-kit/actions/runs/43751321655)). Before that, its two gate steps were replayed locally under `bash -e`, together with a mistyped path and a swapped file, and each failed where it should.
 
 ## Layout
 
