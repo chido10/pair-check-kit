@@ -1,0 +1,12 @@
+# Example service config. The pair check reads one variable from this env list.
+# MODEL_ID and STUB_FILE are the pair: change both in one commit, or neither.
+env:
+  - name: BASELINE_STUB_FILE   # the previous model's stub, used only when scoring the old model
+    value: stub_v2.txt
+  # Rollback pair, kept for reference:
+  # - name: STUB_FILE
+  #   value: stub_v2.txt
+  - name: MODEL_ID
+    value: "<your-custom-model-deployment-arn>"
+  - name: STUB_FILE
+    value: stub_v2.1.txt

@@ -1,0 +1,40 @@
+name: pair-check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+
+  gate:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: The matching pair passes every check
+        run: >
+          python pair_check.py
+          --train sample/train_ok.jsonl
+          --stub sample/prompts/stub_v2.1.txt
+          --config sample/service.yaml --var STUB_FILE
+          --expect-newest
+      - name: A file built against two stubs must fail with exit 1, not 2
+        run: |
+          code=0
+          python pair_check.py --train sample/train_mixed.jsonl --stub sample/prompts/stub_v2.1.txt || code=$?
+          if [ "$code" -ne 1 ]; then
+            echo "expected exit 1 (a pair mismatch), got $code"
+            exit 1
+          fi
